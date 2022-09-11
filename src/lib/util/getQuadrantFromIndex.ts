@@ -1,9 +1,9 @@
-import { AppStore } from "../store";
+import { AppStore, Quadrant } from "../store";
 
 export const getQuadrantFromIndex = (
   index: number,
   columns: Pick<AppStore, "columns">["columns"]
-): 1 | 2 | 3 | 4 => {
+): Quadrant => {
   if (columns === "four") {
     if (index >= 1 && index <= 16) {
       return 1;

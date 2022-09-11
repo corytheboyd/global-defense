@@ -15,12 +15,12 @@ export const Cell: React.FC<{
   let borderColor = "";
   if (quadrant === 1) {
     if (isSelected) {
-      backgroundColor = "red-168";
+      backgroundColor = "cyan-168";
       textColor = "white-255-text";
-      borderColor = "red-255-border";
+      borderColor = "cyan-255-border";
     } else {
-      textColor = "red-168-text";
-      borderColor = "red-168-border";
+      textColor = "cyan-168-text";
+      borderColor = "cyan-168-border";
     }
   } else if (quadrant === 2) {
     if (isSelected) {
@@ -33,21 +33,21 @@ export const Cell: React.FC<{
     }
   } else if (quadrant === 3) {
     if (isSelected) {
-      backgroundColor = "green-168";
-      textColor = "black-255-text";
-      borderColor = "green-255-border";
-    } else {
-      textColor = "green-168-text";
-      borderColor = "green-168-border";
-    }
-  } else if (quadrant === 4) {
-    if (isSelected) {
       backgroundColor = "orange-168";
-      textColor = "white-255-text";
+      textColor = "black-255-text";
       borderColor = "orange-255-border";
     } else {
       textColor = "orange-168-text";
       borderColor = "orange-168-border";
+    }
+  } else if (quadrant === 4) {
+    if (isSelected) {
+      backgroundColor = "green-168";
+      textColor = "white-255-text";
+      borderColor = "green-255-border";
+    } else {
+      textColor = "green-168-text";
+      borderColor = "green-168-border";
     }
   }
 

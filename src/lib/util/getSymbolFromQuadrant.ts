@@ -1,8 +1,6 @@
-import { getQuadrantFromIndex } from "./getQuadrantFromIndex";
+import { Quadrant } from "../store";
 
-export const getSymbolFromQuadrant = (
-  quadrant: ReturnType<typeof getQuadrantFromIndex>
-): string => {
+export const getSymbolFromQuadrant = (quadrant: Quadrant): string => {
   if (quadrant === 1) {
     return "Λ";
   } else if (quadrant === 2) {

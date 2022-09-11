@@ -1,9 +1,9 @@
 import React, { useCallback } from "react";
-import { useStore } from "./store";
+import { Quadrant, useStore } from "./store";
 import { getSymbolFromQuadrant } from "./util/getSymbolFromQuadrant";
 
 const MunitionSelect: React.FC = () => {
-  const { setSelectedMunition } = useStore();
+  const { setSelectedMunition, missileCount, scannerCount } = useStore();
 
   const handleClickMissile = useCallback(() => {
     setSelectedMunition("MISSILE");
@@ -15,12 +15,18 @@ const MunitionSelect: React.FC = () => {
   return (
     <fieldset className="tui-fieldset tui-border-solid">
       <legend>Munition Type</legend>
-      <div className="flex flex-col space-y-5">
-        <button className="tui-button red-168" onClick={handleClickMissile}>
-          MISSILE (8)
+      <div className="flex items-center justify-center w-full space-x-5 mb-2">
+        <button
+          className="tui-button green-168 text-xs flex-grow"
+          onClick={handleClickScanner}
+        >
+          SCANNER ({scannerCount})
         </button>
-        <button className="tui-button green-168" onClick={handleClickScanner}>
-          SCANNER (3)
+        <button
+          className="tui-button red-168 text-xs flex-grow"
+          onClick={handleClickMissile}
+        >
+          MISSILE ({missileCount})
         </button>
       </div>
     </fieldset>
@@ -39,29 +45,35 @@ const MunitionConfirm: React.FC = () => {
 
   let title;
   let actionButtonLabel;
+  let actionButtonTextColor;
   let actionButtonColor;
   if (selectedMunition === "MISSILE") {
     title = "Fire Missile";
     actionButtonLabel = "FIRE";
     actionButtonColor = "red-255";
+    actionButtonTextColor = "white-255-text";
   } else if (selectedMunition === "SCANNER") {
     title = "Deploy Scanner";
     actionButtonLabel = "DEPLOY";
     actionButtonColor = "green-255";
+    actionButtonTextColor = "black-255-text";
   }
 
   return (
     <fieldset className="tui-fieldset tui-border-solid">
       <legend>{title}</legend>
-      <div className="flex flex-col space-y-5">
+      <div className="flex items-center justify-center mb-2 space-x-4">
         <button
-          className={`tui-button ${actionButtonColor}`}
+          className="tui-button white-168 basis-1/3 text-xs"
+          onClick={handleClickCancel}
+        >
+          ABORT
+        </button>
+        <button
+          className={`tui-button text-xs basis-2/3 ${actionButtonColor} ${actionButtonTextColor}`}
           onClick={handleClickFire}
         >
           {actionButtonLabel}
-        </button>
-        <button className="tui-button white-255" onClick={handleClickCancel}>
-          CANCEL
         </button>
       </div>
     </fieldset>
@@ -81,10 +93,13 @@ export const CommandCenter: React.FC = () => {
     information = `Targeting: ${quadrantSymbol} ${positionString}. Select munition and fire when ready.`;
   }
 
-  const showMunitionSelect = Boolean(position && quadrant && !selectedMunition);
-  const showMunitionConfirm = Boolean(selectedMunition);
+  const isPositionSelected = Boolean(position && quadrant);
+  const isMunitionSelected = Boolean(selectedMunition);
   const isMissileSelected = selectedMunition === "MISSILE";
   const isScannerSelected = selectedMunition === "SCANNER";
+
+  const showMunitionSelect = isPositionSelected && !isMunitionSelected;
+  const showMunitionConfirm = isMunitionSelected;
 
   let backgroundColor = "white-168";
   if (isMissileSelected) {
@@ -98,10 +113,18 @@ export const CommandCenter: React.FC = () => {
       <div className="tui-panel-header white-255">
         <h2 className="black-255-text">Command Center</h2>
       </div>
-      <div className={`tui-panel-content text-sm ${backgroundColor}`}>
+      <div className={`tui-panel-content ${backgroundColor}`}>
         <fieldset className="tui-fieldset tui-border-dotted">
           <legend>Information</legend>
-          <p className="text-xs black-255-text">{information}</p>
+          <p className="text-xs black-255-text">
+            {!isPositionSelected && <span>Select a grid cell to proceed.</span>}
+            {isPositionSelected && (
+              <span className="font-bold">
+                Position: {getSymbolFromQuadrant(quadrant as Quadrant)} (
+                {position?.x}, {position?.y})
+              </span>
+            )}
+          </p>
         </fieldset>
 
         {showMunitionSelect && <MunitionSelect />}
