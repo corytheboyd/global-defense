@@ -3,6 +3,8 @@ import { useStore } from "./store";
 import { getQuadrantFromIndex } from "./util/getQuadrantFromIndex";
 import { getSymbolFromQuadrant } from "./util/getSymbolFromQuadrant";
 import { getAdjacentIndexesFromIndex } from "./util/getAdjacentIndexesFromIndex";
+import { getScannerConfidenceFromIndex } from "./util/getScannerConfidenceFromIndex";
+import { getIsMissileHit } from "./util/getIsMissileHit";
 
 export const Cell: React.FC<{
   index: number;
@@ -14,16 +16,30 @@ export const Cell: React.FC<{
     missileCount,
     selectedMunition,
   } = useStore();
-  const quadrant = getQuadrantFromIndex(index, columns);
-  const isSelected = selectedGridIndex === index;
-  const isScanner = selectedMunition === "SCANNER";
-  const isMissile = selectedMunition === "MISSILE";
 
   const missileShotForThisIndex = useStore((state) =>
     state.shots.find(
       (shot) => shot.munition === "MISSILE" && shot.index === index
     )
   );
+  const scannerTouchIndexes = useStore((state) =>
+    state.shots
+      .filter((shot) => shot.munition === "SCANNER")
+      .flatMap((shot) =>
+        getAdjacentIndexesFromIndex(shot.index, columns).concat(shot.index)
+      )
+  );
+
+  const quadrant = getQuadrantFromIndex(index, columns);
+  const isSelected = selectedGridIndex === index;
+  const isScanner = selectedMunition === "SCANNER";
+  const isMissile = selectedMunition === "MISSILE";
+
+  const isTouchedByScanner = scannerTouchIndexes.includes(index);
+  const isHitByMissile = false;
+  if (missileShotForThisIndex) {
+    getIsMissileHit(index);
+  }
 
   let isAdjacentSelected = false;
   if (selectedGridIndex && isScanner) {
@@ -89,7 +105,12 @@ export const Cell: React.FC<{
   }
 
   let borderStyle = "tui-border-dotted";
-  if (selectedGridIndex === index || isAdjacentSelected) {
+  if (
+    selectedGridIndex === index ||
+    isAdjacentSelected ||
+    isTouchedByScanner ||
+    isHitByMissile
+  ) {
     borderStyle = "tui-border-solid";
   }
 
@@ -111,7 +132,7 @@ export const Cell: React.FC<{
     }
   }
 
-  if (missileShotForThisIndex) {
+  if (isHitByMissile) {
     const isHit = true; // TODO lol
     if (isHit) {
       backgroundColor = "red-168";
@@ -121,8 +142,14 @@ export const Cell: React.FC<{
     }
   }
 
+  if (isTouchedByScanner) {
+    label = `${getScannerConfidenceFromIndex(index)}?`;
+  }
+
   const handleClick = useCallback(() => {
     if (missileCount == 0) {
+      return;
+    } else if (isHitByMissile) {
       return;
     }
     setSelectedGridIndex(index);
