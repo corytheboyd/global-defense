@@ -36,10 +36,7 @@ export const Cell: React.FC<{
   const isMissile = selectedMunition === "MISSILE";
 
   const isTouchedByScanner = scannerTouchIndexes.includes(index);
-  const isHitByMissile = false;
-  if (missileShotForThisIndex) {
-    getIsMissileHit(index);
-  }
+  const isShotAtByMissile = Boolean(missileShotForThisIndex);
 
   let isAdjacentSelected = false;
   if (selectedGridIndex && isScanner) {
@@ -109,7 +106,7 @@ export const Cell: React.FC<{
     selectedGridIndex === index ||
     isAdjacentSelected ||
     isTouchedByScanner ||
-    isHitByMissile
+    isShotAtByMissile
   ) {
     borderStyle = "tui-border-solid";
   }
@@ -132,24 +129,28 @@ export const Cell: React.FC<{
     }
   }
 
-  if (isHitByMissile) {
-    const isHit = true; // TODO lol
+  if (isTouchedByScanner) {
+    label = `${getScannerConfidenceFromIndex(index)}?`;
+  }
+  if (isShotAtByMissile) {
+    const isHit = getIsMissileHit(index);
     if (isHit) {
       backgroundColor = "red-168";
       borderColor = "red-168-border";
       textColor = "white-168-text";
       label = "H";
+    } else {
+      backgroundColor = "white-168";
+      borderColor = "white-168-border";
+      textColor = "black-168-text";
+      label = "X";
     }
-  }
-
-  if (isTouchedByScanner) {
-    label = `${getScannerConfidenceFromIndex(index)}?`;
   }
 
   const handleClick = useCallback(() => {
     if (missileCount == 0) {
       return;
-    } else if (isHitByMissile) {
+    } else if (isShotAtByMissile) {
       return;
     }
     setSelectedGridIndex(index);
