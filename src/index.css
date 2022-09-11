@@ -3,5 +3,5 @@
 @tailwind utilities;
 
 body {
-  @apply h-full w-full bg-amber-200;
+  @apply h-full w-full;
 }

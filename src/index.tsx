@@ -1,6 +1,10 @@
+import "./index.css";
+import "tuicss/dist/tuicss.js";
+import "tuicss/dist/tuicss.css";
+
 import React from "react";
 import ReactDOM from "react-dom/client";
-import "./index.css";
+
 import App from "./App";
 
 const root = ReactDOM.createRoot(

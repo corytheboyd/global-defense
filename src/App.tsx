@@ -1,19 +1,25 @@
-import "tuicss/dist/tuicss.js";
-import "tuicss/dist/tuicss.css";
-
 import React from "react";
 import { Grid } from "./lib/Grid";
-import { InfoPanel } from "./lib/InfoPanel";
+import { CommandCenter } from "./lib/CommandCenter";
 
 function App() {
   return (
-    <div className="bg-emerald-200 m-2 space-y-2">
-      <header className="bg-emerald-300">
-        <h1>Global Defense</h1>
-      </header>
-      <main className="bg-emerald-400">
-        <Grid columns="four" />
-        <InfoPanel />
+    <div className="flex flex-col">
+      <nav className="tui-nav relative mb-3">
+        <span>Global Defense v0.1</span>
+      </nav>
+
+      <main className="ml-2 mr-4 space-y-5 ">
+        <section className="tui-window w-full">
+          <fieldset className="tui-fieldset tui-border-solid">
+            <legend>Defense Grid</legend>
+            <Grid columns={"eight"} />
+          </fieldset>
+        </section>
+
+        <section>
+          <CommandCenter />
+        </section>
       </main>
     </div>
   );

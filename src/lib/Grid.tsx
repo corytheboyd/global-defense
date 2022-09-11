@@ -48,19 +48,29 @@ const getQuadrantFromIndex = (index: number, columns: "four" | "eight") => {
 
 const buildCell = (index: number, columns: "four" | "eight") => {
   const quadrant = getQuadrantFromIndex(index, columns);
-  let backgroundColor;
+
+  let color;
+  let symbol;
   if (quadrant === 1) {
-    backgroundColor = "bg-blue-800";
+    color = "red-168-border red-168-text";
+    symbol = "Λ";
   } else if (quadrant === 2) {
-    backgroundColor = "bg-emerald-800";
+    color = "yellow-168-border yellow-168-text";
+    symbol = "Σ";
   } else if (quadrant === 3) {
-    backgroundColor = "bg-amber-800";
+    color = "green-168-border green-168-text";
+    symbol = "Φ";
   } else if (quadrant === 4) {
-    backgroundColor = "bg-red-800";
+    color = "orange-168-border orange-168-text";
+    symbol = "Ω";
   }
+
   return (
-    <div key={index} className={`${backgroundColor} h-8`}>
-      {quadrant}
+    <div
+      key={index}
+      className={`${color} h-8 tui-border-dotted flex items-center justify-center`}
+    >
+      <span className="text-xs">{symbol}</span>
     </div>
   );
 };
@@ -79,9 +89,5 @@ export const Grid: React.FC<{ columns: "four" | "eight" }> = ({ columns }) => {
     columnsClass = "grid-cols-4";
   }
 
-  return (
-    <section className={`bg-red-500 grid gap-1 ${columnsClass}`}>
-      {cells}
-    </section>
-  );
+  return <article className={`grid gap-1 ${columnsClass}`}>{cells}</article>;
 };
