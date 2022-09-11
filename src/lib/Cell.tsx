@@ -19,6 +19,12 @@ export const Cell: React.FC<{
   const isScanner = selectedMunition === "SCANNER";
   const isMissile = selectedMunition === "MISSILE";
 
+  const missileShotForThisIndex = useStore((state) =>
+    state.shots.find(
+      (shot) => shot.munition === "MISSILE" && shot.index === index
+    )
+  );
+
   let isAdjacentSelected = false;
   if (selectedGridIndex && isScanner) {
     const adjacentIndexesToSelected = getAdjacentIndexesFromIndex(
@@ -102,6 +108,16 @@ export const Cell: React.FC<{
       backgroundColor = "red-168";
       borderColor = "red-255-border";
       textColor = "white-255-text";
+    }
+  }
+
+  if (missileShotForThisIndex) {
+    const isHit = true; // TODO lol
+    if (isHit) {
+      backgroundColor = "red-168";
+      borderColor = "red-168-border";
+      textColor = "white-168-text";
+      label = "H";
     }
   }
 
