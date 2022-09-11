@@ -34,15 +34,11 @@ export const Cell: React.FC<{
   }
 
   let label = getSymbolFromQuadrant(quadrant);
-  if (isScanner) {
-    if (isSelected) {
-      label = "SS";
-    } else if (isAdjacentSelected) {
-      label = "S";
-    }
+  if (isScanner && isSelected) {
+    label = "S";
   }
   if (isMissile && isSelected) {
-    label = "MM";
+    label = "M";
   }
 
   let textColor = "";
@@ -91,8 +87,22 @@ export const Cell: React.FC<{
     borderStyle = "tui-border-solid";
   }
 
-  if (isAdjacentSelected) {
-    textColor = "white-255-text";
+  if (isScanner) {
+    if (isSelected) {
+      textColor = "black-255-text";
+      borderColor = "green-168-border";
+      backgroundColor = "green-255";
+    } else if (isAdjacentSelected) {
+      borderColor = "green-255-border";
+    }
+  }
+
+  if (isMissile) {
+    if (isSelected) {
+      backgroundColor = "red-168";
+      borderColor = "red-255-border";
+      textColor = "white-255-text";
+    }
   }
 
   const handleClick = useCallback(() => {

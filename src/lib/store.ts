@@ -26,7 +26,6 @@ export const useStore = create<AppStore>((set, get) => ({
   selectedGridIndex: null,
   setSelectedGridIndex: (index) =>
     set(() => {
-      console.log("select index", index);
       get().clearSelectedMunition();
       return { selectedGridIndex: index };
     }),
