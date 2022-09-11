@@ -4,9 +4,10 @@ import { getQuadrantFromIndex } from "./util/getQuadrantFromIndex";
 
 export type Munition = "SCANNER" | "MISSILE";
 export type Quadrant = 1 | 2 | 3 | 4;
+export type Columns = "four" | "eight";
 
 export type AppStore = {
-  columns: "four" | "eight";
+  columns: Columns;
   shots: { index: number; munition: Munition }[];
   selectedGridIndex: number | null;
   setSelectedGridIndex: (index: number) => void;
@@ -22,7 +23,7 @@ export type AppStore = {
 export const useStore = create<AppStore>((set, get) => ({
   columns: "eight",
   shots: [],
-  selectedGridIndex: 60, // TODO default null
+  selectedGridIndex: null,
   setSelectedGridIndex: (index) =>
     set(() => {
       console.log("select index", index);
@@ -45,7 +46,7 @@ export const useStore = create<AppStore>((set, get) => ({
   },
   missileCount: 8,
   scannerCount: 3,
-  selectedMunition: "SCANNER", // TODO default null
+  selectedMunition: null,
   setSelectedMunition: (munition) => set({ selectedMunition: munition }),
   clearSelectedMunition: () => set({ selectedMunition: null }),
 }));

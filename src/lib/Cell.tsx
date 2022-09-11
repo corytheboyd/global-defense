@@ -2,14 +2,48 @@ import React, { useCallback } from "react";
 import { useStore } from "./store";
 import { getQuadrantFromIndex } from "./util/getQuadrantFromIndex";
 import { getSymbolFromQuadrant } from "./util/getSymbolFromQuadrant";
+import { getAdjacentIndexesFromIndex } from "./util/getAdjacentIndexesFromIndex";
 
 export const Cell: React.FC<{
   index: number;
 }> = ({ index }) => {
-  const { columns, selectedGridIndex, setSelectedGridIndex, missileCount } =
-    useStore();
+  const {
+    columns,
+    selectedGridIndex,
+    setSelectedGridIndex,
+    missileCount,
+    selectedMunition,
+  } = useStore();
   const quadrant = getQuadrantFromIndex(index, columns);
   const isSelected = selectedGridIndex === index;
+  const isScanner = selectedMunition === "SCANNER";
+  const isMissile = selectedMunition === "MISSILE";
+
+  let isAdjacentSelected = false;
+  if (selectedGridIndex && isScanner) {
+    const adjacentIndexesToSelected = getAdjacentIndexesFromIndex(
+      selectedGridIndex,
+      columns
+    );
+    if (
+      index !== selectedGridIndex &&
+      adjacentIndexesToSelected.includes(index)
+    ) {
+      isAdjacentSelected = true;
+    }
+  }
+
+  let label = getSymbolFromQuadrant(quadrant);
+  if (isScanner) {
+    if (isSelected) {
+      label = "SS";
+    } else if (isAdjacentSelected) {
+      label = "S";
+    }
+  }
+  if (isMissile && isSelected) {
+    label = "MM";
+  }
 
   let textColor = "";
   let backgroundColor = "";
@@ -53,8 +87,12 @@ export const Cell: React.FC<{
   }
 
   let borderStyle = "tui-border-dotted";
-  if (selectedGridIndex === index) {
+  if (selectedGridIndex === index || isAdjacentSelected) {
     borderStyle = "tui-border-solid";
+  }
+
+  if (isAdjacentSelected) {
+    textColor = "white-255-text";
   }
 
   const handleClick = useCallback(() => {
@@ -70,10 +108,7 @@ export const Cell: React.FC<{
       className={`${textColor} ${borderColor} ${borderStyle} ${backgroundColor} h-8 flex items-center justify-center`}
       onClick={handleClick}
     >
-      <span className="text-xs">
-        {getSymbolFromQuadrant(quadrant)}
-        {index}
-      </span>
+      <span className="text-xs">{label}</span>
     </div>
   );
 };

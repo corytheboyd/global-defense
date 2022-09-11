@@ -1,8 +1,9 @@
-import { useStore } from "../store";
+import { Columns } from "../store";
 
-export const getAdjacentIndexesFromIndex = (index: number): number[] => {
-  const { columns } = useStore();
-
+export const getAdjacentIndexesFromIndex = (
+  index: number,
+  columns: Columns
+): number[] => {
   const adjacentIndexes = [];
 
   if (columns === "eight") {
