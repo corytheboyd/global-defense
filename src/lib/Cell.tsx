@@ -6,7 +6,8 @@ import { getSymbolFromQuadrant } from "./util/getSymbolFromQuadrant";
 export const Cell: React.FC<{
   index: number;
 }> = ({ index }) => {
-  const { columns, selectedGridIndex, setSelectedGridIndex } = useStore();
+  const { columns, selectedGridIndex, setSelectedGridIndex, missileCount } =
+    useStore();
   const quadrant = getQuadrantFromIndex(index, columns);
   const isSelected = selectedGridIndex === index;
 
@@ -57,8 +58,11 @@ export const Cell: React.FC<{
   }
 
   const handleClick = useCallback(() => {
+    if (missileCount == 0) {
+      return;
+    }
     setSelectedGridIndex(index);
-  }, [index]);
+  }, [setSelectedGridIndex, missileCount, index]);
 
   return (
     <div

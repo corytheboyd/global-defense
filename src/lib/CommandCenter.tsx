@@ -20,8 +20,9 @@ export const CommandCenter: React.FC = () => {
   const isMissileSelected = selectedMunition === "MISSILE";
   const isScannerSelected = selectedMunition === "SCANNER";
 
-  const showMunitionSelect = isPositionSelected && !isMunitionSelected;
-  const showMunitionConfirm = isMunitionSelected;
+  const showMunitionSelect =
+    missileCount > 0 && isPositionSelected && !isMunitionSelected;
+  const showMunitionConfirm = missileCount > 0 && isMunitionSelected;
 
   let backgroundColor = "white-168";
   if (isMissileSelected) {
@@ -63,25 +64,38 @@ export const CommandCenter: React.FC = () => {
                 </p>
               </div>
               <div>
-                {!isPositionSelected && (
-                  <>
-                    <p>Welcome back, commander.</p>
-                    <p>Select a grid cell to proceed.</p>
-                  </>
-                )}
-                {isPositionSelected && !isMunitionSelected && (
+                {missileCount === 0 && (
                   <p>
-                    Select a munition type to arm for deployment, commander.
+                    <span className="font-bold">Missiles depleted.</span>{" "}
+                    <span>
+                      Report back tomorrow for your next assignment, commander.
+                    </span>
                   </p>
                 )}
 
-                {isMissileSelected && (
-                  <p>Deep impact nuclear warhead armed for launch.</p>
-                )}
-                {isScannerSelected && (
-                  <p>
-                    Short-range radial scanning beacon ready for deployment.
-                  </p>
+                {missileCount > 0 && (
+                  <>
+                    {!isPositionSelected && (
+                      <>
+                        <p>Welcome back, commander.</p>
+                        <p>Select a grid cell to proceed.</p>
+                      </>
+                    )}
+                    {isPositionSelected && !isMunitionSelected && (
+                      <p>
+                        Select a munition type to arm for deployment, commander.
+                      </p>
+                    )}
+
+                    {isMissileSelected && (
+                      <p>Deep impact nuclear warhead armed for launch.</p>
+                    )}
+                    {isScannerSelected && (
+                      <p>
+                        Short-range radial scanning beacon ready for deployment.
+                      </p>
+                    )}
+                  </>
                 )}
               </div>
             </div>
