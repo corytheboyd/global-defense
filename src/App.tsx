@@ -12,7 +12,7 @@ function App() {
       <main className="ml-2 mr-4 space-y-5 ">
         <section className="tui-window w-full">
           <fieldset className="tui-fieldset tui-border-solid">
-            <legend>Defense Grid</legend>
+            <legend className="text-xs">Defense Grid</legend>
             <Grid />
           </fieldset>
         </section>

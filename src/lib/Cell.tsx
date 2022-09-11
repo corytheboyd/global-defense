@@ -70,7 +70,10 @@ export const Cell: React.FC<{
       className={`${textColor} ${borderColor} ${borderStyle} ${backgroundColor} h-8 flex items-center justify-center`}
       onClick={handleClick}
     >
-      <span className="text-xs">{getSymbolFromQuadrant(quadrant)}</span>
+      <span className="text-xs">
+        {getSymbolFromQuadrant(quadrant)}
+        {index}
+      </span>
     </div>
   );
 };

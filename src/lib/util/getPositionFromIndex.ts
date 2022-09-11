@@ -1,6 +1,6 @@
 import { AppStore } from "../store";
 
-type Position = {
+export type Position = {
   x: number;
   y: number;
 };

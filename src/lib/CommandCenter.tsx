@@ -39,7 +39,7 @@ export const CommandCenter: React.FC = () => {
       <div className={`tui-panel-content ${backgroundColor}`}>
         <fieldset className="tui-fieldset tui-border-dotted">
           <legend className="text-xs">Information</legend>
-          <p className="text-xs black-255-text">
+          <div className="text-xs black-255-text">
             <div className="space-y-2">
               <div>
                 <p>
@@ -99,7 +99,7 @@ export const CommandCenter: React.FC = () => {
                 )}
               </div>
             </div>
-          </p>
+          </div>
         </fieldset>
 
         {showMunitionSelect && <MunitionSelect />}
