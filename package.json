@@ -1,5 +1,5 @@
 {
-  "name": "daily-battleship",
+  "name": "global-defense",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
@@ -8,11 +8,11 @@
     "@types/node": "^16.11.58",
     "@types/react": "^18.0.19",
     "@types/react-dom": "^18.0.6",
-    "bootstrap": "^5.2.1",
     "prettier": "^2.7.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-scripts": "5.0.1",
+    "tuicss": "^2.1.1",
     "typescript": "^4.8.3",
     "web-vitals": "^2.1.4"
   },
@@ -41,7 +41,10 @@
   "devDependencies": {
     "@typescript-eslint/eslint-plugin": "^5.36.2",
     "@typescript-eslint/parser": "^5.36.2",
+    "autoprefixer": "^10.4.8",
     "eslint": "8.22.0",
-    "eslint-plugin-react": "^7.31.8"
+    "eslint-plugin-react": "^7.31.8",
+    "postcss": "^8.4.16",
+    "tailwindcss": "^3.1.8"
   }
 }

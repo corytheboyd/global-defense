@@ -20,11 +20,9 @@
     "noEmit": true,
     "jsx": "react",
     "noImplicitAny": true,
-    "noUnusedLocals": true,
     "noImplicitOverride": true,
     "noImplicitThis": true,
     "noImplicitReturns": true,
-    "noUnusedParameters": true,
     "strictNullChecks": true
   },
   "include": [
