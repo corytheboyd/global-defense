@@ -15,18 +15,18 @@ const MunitionSelect: React.FC = () => {
   return (
     <fieldset className="tui-fieldset tui-border-solid">
       <legend>Munition Type</legend>
-      <div className="flex items-center justify-center w-full space-x-5 mb-2">
+      <div className="flex w-full space-x-4 mb-2">
         <button
-          className="tui-button green-168 text-xs flex-grow"
+          className="tui-button green-168 text-xs basis-1/2"
           onClick={handleClickScanner}
         >
-          SCANNER ({scannerCount})
+          SCANNER
         </button>
         <button
-          className="tui-button red-168 text-xs flex-grow"
+          className="tui-button red-168 text-xs basis-1/2"
           onClick={handleClickMissile}
         >
-          MISSILE ({missileCount})
+          MISSILE
         </button>
       </div>
     </fieldset>
@@ -119,10 +119,14 @@ export const CommandCenter: React.FC = () => {
           <p className="text-xs black-255-text">
             {!isPositionSelected && <span>Select a grid cell to proceed.</span>}
             {isPositionSelected && (
-              <span className="font-bold">
-                Position: {getSymbolFromQuadrant(quadrant as Quadrant)} (
-                {position?.x}, {position?.y})
-              </span>
+              <>
+                <p>
+                  Targeting Position:{" "}
+                  {getSymbolFromQuadrant(quadrant as Quadrant)} ({position?.x},{" "}
+                  {position?.y})
+                </p>
+                <p>Select a munition type to arm.</p>
+              </>
             )}
           </p>
         </fieldset>
