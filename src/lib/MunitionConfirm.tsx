@@ -2,11 +2,24 @@ import React, { useCallback } from "react";
 import { useStore } from "./store";
 
 export const MunitionConfirm: React.FC = () => {
-  const { selectedMunition, clearSelectedMunition } = useStore();
+  const {
+    selectedGridIndex,
+    selectedMunition,
+    clearSelectedMunition,
+    fireShot,
+  } = useStore();
 
   const handleClickFire = useCallback(() => {
-    console.log("TODO fire!");
-  }, []);
+    if (!selectedGridIndex || !selectedMunition) {
+      throw new Error(
+        "Cannot fire shot without selected grid index or munition"
+      );
+    }
+    const shot = { index: selectedGridIndex, munition: selectedMunition };
+    console.log("handleClickFire", fireShot, shot);
+    fireShot(shot);
+  }, [fireShot, selectedGridIndex, selectedMunition]);
+
   const handleClickCancel = useCallback(() => {
     clearSelectedMunition();
   }, [clearSelectedMunition]);

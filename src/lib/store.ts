@@ -5,12 +5,14 @@ import { getQuadrantFromIndex } from "./util/getQuadrantFromIndex";
 export type Munition = "SCANNER" | "MISSILE";
 export type Quadrant = 1 | 2 | 3 | 4;
 export type Columns = "four" | "eight";
+export type Shot = { index: number; munition: Munition };
 
 export type AppStore = {
   columns: Columns;
-  shots: { index: number; munition: Munition }[];
+  shots: Shot[];
   selectedGridIndex: number | null;
   setSelectedGridIndex: (index: number) => void;
+  clearSelectedGridIndex: () => void;
   getSelectedGridPosition: () => ReturnType<typeof getPositionFromIndex> | null;
   getSelectedGridQuadrant: () => ReturnType<typeof getQuadrantFromIndex> | null;
   missileCount: number;
@@ -18,6 +20,7 @@ export type AppStore = {
   selectedMunition: Munition | null;
   setSelectedMunition: (munition: Munition) => void;
   clearSelectedMunition: () => void;
+  fireShot: (shot: Shot) => void;
 };
 
 export const useStore = create<AppStore>((set, get) => ({
@@ -29,6 +32,7 @@ export const useStore = create<AppStore>((set, get) => ({
       get().clearSelectedMunition();
       return { selectedGridIndex: index };
     }),
+  clearSelectedGridIndex: () => set({ selectedGridIndex: null }),
   getSelectedGridPosition: () => {
     const { selectedGridIndex, columns } = get();
     if (!selectedGridIndex) {
@@ -48,4 +52,21 @@ export const useStore = create<AppStore>((set, get) => ({
   selectedMunition: null,
   setSelectedMunition: (munition) => set({ selectedMunition: munition }),
   clearSelectedMunition: () => set({ selectedMunition: null }),
+  fireShot: (shot) => {
+    console.log("fireShot", shot);
+
+    const { shots, missileCount, scannerCount } = get();
+    const partial: Partial<AppStore> = { shots: shots.concat(shot) };
+
+    if (shot.munition === "MISSILE") {
+      partial.missileCount = missileCount - 1;
+    } else if (shot.munition === "SCANNER") {
+      partial.scannerCount = scannerCount - 1;
+    }
+
+    get().clearSelectedMunition();
+    get().clearSelectedGridIndex();
+
+    return set(partial);
+  },
 }));
