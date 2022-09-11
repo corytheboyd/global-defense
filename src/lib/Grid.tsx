@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useCallback } from "react";
+import { useStore } from "./store";
 
 const getQuadrantFromIndex = (index: number, columns: "four" | "eight") => {
   if (columns === "four") {
@@ -46,31 +47,77 @@ const getQuadrantFromIndex = (index: number, columns: "four" | "eight") => {
   return -1;
 };
 
-const buildCell = (index: number, columns: "four" | "eight") => {
+const Cell: React.FC<{ index: number; columns: "four" | "eight" }> = ({
+  index,
+  columns,
+}) => {
+  const { selectedGridIndex, setSelectedGridIndex } = useStore();
   const quadrant = getQuadrantFromIndex(index, columns);
 
-  let color;
-  let symbol;
+  const isSelected = selectedGridIndex === index;
+
+  let textColor = "";
+  let quadrantSymbol;
+  let backgroundColor = "";
+  let borderColor = "";
   if (quadrant === 1) {
-    color = "red-168-border red-168-text";
-    symbol = "Λ";
+    quadrantSymbol = "Λ";
+    if (isSelected) {
+      backgroundColor = "red-168";
+      textColor = "white-255-text";
+      borderColor = "red-255-border";
+    } else {
+      textColor = "red-168-text";
+      borderColor = "red-168-border";
+    }
   } else if (quadrant === 2) {
-    color = "yellow-168-border yellow-168-text";
-    symbol = "Σ";
+    quadrantSymbol = "Σ";
+    if (isSelected) {
+      backgroundColor = "yellow-168";
+      textColor = "black-255-text";
+      borderColor = "yellow-255-border";
+    } else {
+      textColor = "yellow-168-text";
+      borderColor = "yellow-168-border";
+    }
   } else if (quadrant === 3) {
-    color = "green-168-border green-168-text";
-    symbol = "Φ";
+    quadrantSymbol = "Φ";
+    if (isSelected) {
+      backgroundColor = "green-168";
+      textColor = "black-255-text";
+      borderColor = "green-255-border";
+    } else {
+      textColor = "green-168-text";
+      borderColor = "green-168-border";
+    }
   } else if (quadrant === 4) {
-    color = "orange-168-border orange-168-text";
-    symbol = "Ω";
+    quadrantSymbol = "Ω";
+    if (isSelected) {
+      backgroundColor = "orange-168";
+      textColor = "white-255-text";
+      borderColor = "orange-255-border";
+    } else {
+      textColor = "orange-168-text";
+      borderColor = "orange-168-border";
+    }
   }
+
+  let borderStyle = "tui-border-dotted";
+  if (selectedGridIndex === index) {
+    borderStyle = "tui-border-solid";
+  }
+
+  const handleClick = useCallback(() => {
+    setSelectedGridIndex(index);
+  }, [index]);
 
   return (
     <div
       key={index}
-      className={`${color} h-8 tui-border-dotted flex items-center justify-center`}
+      className={`${textColor} ${borderColor} ${borderStyle} ${backgroundColor} h-8 flex items-center justify-center`}
+      onClick={handleClick}
     >
-      <span className="text-xs">{symbol}</span>
+      <span className="text-xs">{quadrantSymbol}</span>
     </div>
   );
 };
@@ -78,7 +125,8 @@ const buildCell = (index: number, columns: "four" | "eight") => {
 export const Grid: React.FC<{ columns: "four" | "eight" }> = ({ columns }) => {
   const cells = [];
   for (let i = 0; i < 64; i++) {
-    cells.push(buildCell(i + 1, columns));
+    const cellIndex = i + 1;
+    cells.push(<Cell key={cellIndex} index={cellIndex} columns={columns} />);
   }
 
   let columnsClass;
@@ -89,5 +137,5 @@ export const Grid: React.FC<{ columns: "four" | "eight" }> = ({ columns }) => {
     columnsClass = "grid-cols-4";
   }
 
-  return <article className={`grid gap-1 ${columnsClass}`}>{cells}</article>;
+  return <div className={`grid gap-1 ${columnsClass}`}>{cells}</div>;
 };
